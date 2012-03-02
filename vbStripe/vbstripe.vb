@@ -12,12 +12,12 @@ Imports Newtonsoft.Json.Linq
 Public Class vbstripe
 
 
-    Private acctToken As String = String.Empty
+    Public acctToken As String = String.Empty
     Public RestProctocal As String = "https://"
     Public RestAPI As String = "api.stripe.com/v1"
 
 
-    Function update_CustomerSubscription(customerId As String, plan As String, Optional coupon As String = "",
+    Public Function update_CustomerSubscription(customerId As String, plan As String, Optional coupon As String = "",
                                         Optional prorate As String = "", Optional trial_end As String = "",
                                         Optional ccNumber As String = "", Optional ccExp_Month As String = "",
                                         Optional ccExp_Year As String = "", Optional ccCVC As String = "",
@@ -64,7 +64,7 @@ Public Class vbstripe
         Return subScriber
     End Function
 
-    Function delete_CustomerSubscription(customerID As String, Optional at_period_end As String = "") As sSubscription
+    Public Function delete_CustomerSubscription(customerID As String, Optional at_period_end As String = "") As sSubscription
         If acctToken.Length < 10 Then
             Throw New ApplicationException("API not provided.")
         End If
@@ -80,7 +80,7 @@ Public Class vbstripe
         Return subScriber
     End Function
 
-    Function create_Customer(Optional ccNumber As String = "", Optional ccExp_Month As String = "", Optional ccExp_Year As String = "",
+    Public Function create_Customer(Optional ccNumber As String = "", Optional ccExp_Month As String = "", Optional ccExp_Year As String = "",
                                      Optional ccCVC As String = "", Optional ccName As String = "",
                                      Optional ccAddress_Line1 As String = "", Optional ccAddress_Line2 As String = "",
                                      Optional ccAddress_Zip As String = "", Optional ccAddress_State As String = "",
@@ -119,7 +119,7 @@ Public Class vbstripe
         Return cust
     End Function
 
-    Function update_Customer(customerId As String, Optional ccNumber As String = "", Optional ccExp_Month As String = "", Optional ccExp_Year As String = "",
+    Public Function update_Customer(customerId As String, Optional ccNumber As String = "", Optional ccExp_Month As String = "", Optional ccExp_Year As String = "",
                                     Optional ccCVC As String = "", Optional ccName As String = "",
                                     Optional ccAddress_Line1 As String = "", Optional ccAddress_Line2 As String = "",
                                     Optional ccAddress_Zip As String = "", Optional ccAddress_State As String = "",
@@ -181,7 +181,7 @@ Public Class vbstripe
     End Function
 
 
-    Function create_ChargeCreditCard(amount As Integer, currency As String, ccNumber As String, ccExp_Month As String, ccExp_Year As String,
+    Public Function create_ChargeCreditCard(amount As Integer, currency As String, ccNumber As String, ccExp_Month As String, ccExp_Year As String,
                                      Optional ccCVC As String = "", Optional ccName As String = "", Optional ccAddress_Line1 As String = "",
                                      Optional ccAddress_Line2 As String = "", Optional ccAddress_Zip As String = "",
                                      Optional ccAddress_State As String = "",
