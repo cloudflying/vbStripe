@@ -1,0 +1,10 @@
+C:\git\vbStripe\vbStripe\bin\Debug\vbStripe.dll
+C:\git\vbStripe\vbStripe\bin\Debug\vbStripe.pdb
+C:\git\vbStripe\vbStripe\bin\Debug\vbStripe.xml
+C:\git\vbStripe\vbStripe\obj\Debug\ResolveAssemblyReference.cache
+C:\git\vbStripe\vbStripe\obj\Debug\vbStripe.Resources.resources
+C:\git\vbStripe\vbStripe\obj\Debug\ResGen.read.1.tlog
+C:\git\vbStripe\vbStripe\obj\Debug\ResGen.write.1.tlog
+C:\git\vbStripe\vbStripe\obj\Debug\vbStripe.dll
+C:\git\vbStripe\vbStripe\obj\Debug\vbStripe.xml
+C:\git\vbStripe\vbStripe\obj\Debug\vbStripe.pdb
