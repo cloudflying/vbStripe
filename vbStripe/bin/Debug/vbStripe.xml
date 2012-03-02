@@ -6,7 +6,23 @@ vbStripe
 </name>
 </assembly>
 <members>
-<member name="P:vbStripe.My.Resources.Resources.ResourceManager">
+<member name="M:vbStripe.vbstripe.sendReq(System.String,System.String)">
+	<summary>
+ Send API request
+ </summary>
+	<param name="data">Form Variables to send with request</param>
+	<param name="apiURI">URI after (Must include starting /)</param>
+	<returns>JSON FROM stripe</returns>
+	<remarks></remarks>
+</member><member name="M:vbStripe.vbstripe.sendDELETEReq(System.String,System.String)">
+	<summary>
+ Send DELETE API request
+ </summary>
+	<param name="data">Form Variables to send with request</param>
+	<param name="apiURI">URI after (Must include starting /)</param>
+	<returns>JSON FROM stripe</returns>
+	<remarks></remarks>
+</member><member name="P:vbStripe.My.Resources.Resources.ResourceManager">
 	<summary>
   Returns the cached ResourceManager instance used by this class.
 </summary>

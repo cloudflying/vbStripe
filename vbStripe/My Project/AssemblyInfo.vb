@@ -10,9 +10,9 @@ Imports System.Runtime.InteropServices
 
 <Assembly: AssemblyTitle("vbStripe")> 
 <Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("Hewlett-Packard")> 
+<Assembly: AssemblyCompany("Text Connects")> 
 <Assembly: AssemblyProduct("vbStripe")> 
-<Assembly: AssemblyCopyright("Copyright © Hewlett-Packard 2012")> 
+<Assembly: AssemblyCopyright("Copyright © Text Connects 2012")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
