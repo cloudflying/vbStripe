@@ -6,7 +6,48 @@ vbStripe
 </name>
 </assembly>
 <members>
-<member name="M:vbStripe.vbstripe.sendReq(System.String,System.String)">
+<member name="P:vbStripe.My.Resources.Resources.ResourceManager">
+	<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member><member name="P:vbStripe.My.Resources.Resources.Culture">
+	<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member><member name="T:vbStripe.My.Resources.Resources">
+	<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member><member name="M:vbStripe.vbstripe.create_Customer(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+	<summary>
+ Create A new customer. No information is required, I would suggest using email address just to have some kind of information attached to the customer. If you provide a Credit Card Number you need to provide the expiration information.
+ </summary>
+	<param name="ccNumber">Credit Card Number: The card number, as a string without any separators.</param>
+	<param name="ccExp_Month">Credit Card Expiration Month: Two digit number representing the card's expiration month.</param>
+	<param name="ccExp_Year">Credit Card Expiration Year: Four digit number representing the card's expiration year.</param>
+	<param name="ccCVC">Credit Card CVC: Card security code</param>
+	<param name="ccName">Name on Credit Card: Cardholder's full name.</param>
+	<param name="ccAddress_Line1">Credit Card Address1 on File, optional</param>
+	<param name="ccAddress_Line2">Credit Card Address2 on File, optional</param>
+	<param name="ccAddress_Zip">Credit Card Zip on File, optional</param>
+	<param name="ccAddress_State">Credit Card State on File, optional</param>
+	<param name="ccAddress_Country">Credit Card Country on File, optional</param>
+	<param name="description">An arbitrary string which you can attach to a customer object. It is displayed alongside the customer in the web interface. </param>
+	<param name="coupon">If you provide a coupon code, the customer will have a discount applied on all recurring charges. Charges you create through the API will not have the discount.</param>
+	<param name="email">The customer's email address. It is displayed alongside the customer in the web interface and can be useful for searching and tracking. </param>
+	<param name="plan">The identifier of the plan to subscribe the customer to. If provided, the returned customer object has a 'subscription' attribute describing the state of the customer's subscription. </param>
+	<param name="trial_end">UTC integer timestamp representing the end of the trial period the customer will get before being charged for the first time. If set, trial_end will override the default trial period of the plan the customer is being subscribed to. </param>
+	<returns>Returns a sCustomer (Stripe Customer) result.</returns>
+	<remarks>https://stripe.com/docs/api#create_customer</remarks>
+</member><member name="M:vbStripe.vbstripe.deleteCustomer(System.String)">
+	<summary>
+ Delete's a customer using CustomerID
+ </summary>
+	<param name="customerId">The identifier of the customer to be deleted. </param>
+	<returns>Boolean - true = Deleted | false = something went wrong</returns>
+	<remarks>https://stripe.com/docs/api#delete_customer</remarks>
+</member><member name="M:vbStripe.vbstripe.sendReq(System.String,System.String)">
 	<summary>
  Send API request
  </summary>
@@ -22,19 +63,6 @@ vbStripe
 	<param name="apiURI">URI after (Must include starting /)</param>
 	<returns>JSON FROM stripe</returns>
 	<remarks></remarks>
-</member><member name="P:vbStripe.My.Resources.Resources.ResourceManager">
-	<summary>
-  Returns the cached ResourceManager instance used by this class.
-</summary>
-</member><member name="P:vbStripe.My.Resources.Resources.Culture">
-	<summary>
-  Overrides the current thread's CurrentUICulture property for all
-  resource lookups using this strongly typed resource class.
-</summary>
-</member><member name="T:vbStripe.My.Resources.Resources">
-	<summary>
-  A strongly-typed resource class, for looking up localized strings, etc.
-</summary>
 </member>
 </members>
 </doc>
