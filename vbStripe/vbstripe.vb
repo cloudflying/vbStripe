@@ -16,6 +16,7 @@ Public Class vbstripe
     Public acctToken As String = String.Empty
     Public RestProctocal As String = "https://"
     Public RestAPI As String = "api.stripe.com/v1"
+    Public stripeError As sError
 
     ' #### CUSTOMERS ####
 
@@ -300,8 +301,26 @@ Public Class vbstripe
 
 #End Region
 
-#Region "Charges : Refund - N/A"
-
+#Region "Charges : Refund"
+    ''' <summary>
+    ''' Creates a refund for any charge that has taken place.
+    ''' </summary>
+    ''' <param name="id">The identifier of the charge to be refunded. </param>
+    ''' <param name="amount">OPTIONAL, A positive integer in cents representing how much of this charge to refund. Can only refund up to the unrefunded amount remaining of the charge. </param>
+    ''' <returns>sCharge object</returns>
+    ''' <remarks>Amount defaults to entire charge.</remarks>
+    Function refundCharge(id As String, Optional amount As Integer = 0) As sCharge
+        If acctToken.Length < 10 Then
+            Throw New ApplicationException("API not provided.")
+        End If
+        Dim apiURI As String = "/charges/" & id & "/refund"
+        Dim data As String = String.Empty
+        If amount <> 0 Then data = "amount=" & amount
+        ' # vvvv Perform Action vvvv
+        Dim returnedData As String = sendReq(data, apiURI)
+        Dim charge As sCharge = JsonConvert.DeserializeObject(Of sCharge)(returnedData)
+        Return charge
+    End Function
 #End Region
 
     ' #### Tokens - COMING SOON ####
@@ -362,8 +381,12 @@ Public Class vbstripe
 
         Catch ex As WebException
             If ex.Status = WebExceptionStatus.ProtocolError Then
-                Throw New ApplicationException("ISSUES")
-                ' Throw New ApplicationException(ex.Response, HttpWebResponse).StatusCode & " : " & CType(ex.Response, HttpWebResponse).StatusDescription
+                Dim read As New StreamReader(ex.Response.GetResponseStream())
+                Dim tmp As String = read.ReadToEnd()
+                read.Close()
+                stripeError = JsonConvert.DeserializeObject(Of sError)(tmp)
+                ' Throw New ApplicationException("ISSUES")
+                Throw New ApplicationException(CType(ex.Response, HttpWebResponse).StatusCode & " : " & tmp)
             Else
                 Throw New ApplicationException(ex.Message)
             End If

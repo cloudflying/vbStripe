@@ -47,6 +47,14 @@ vbStripe
 	<param name="customerId">The identifier of the customer to be deleted. </param>
 	<returns>Boolean - true = Deleted | false = something went wrong</returns>
 	<remarks>https://stripe.com/docs/api#delete_customer</remarks>
+</member><member name="M:vbStripe.vbstripe.refundCharge(System.String,System.Int32)">
+	<summary>
+ Creates a refund for any charge that has taken place.
+ </summary>
+	<param name="id">The identifier of the charge to be refunded. </param>
+	<param name="amount">OPTIONAL, A positive integer in cents representing how much of this charge to refund. Can only refund up to the unrefunded amount remaining of the charge. </param>
+	<returns>sCharge object</returns>
+	<remarks>Amount defaults to entire charge.</remarks>
 </member><member name="M:vbStripe.vbstripe.sendReq(System.String,System.String)">
 	<summary>
  Send API request
