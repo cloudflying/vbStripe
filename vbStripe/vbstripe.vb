@@ -184,7 +184,7 @@ Public Class vbstripe
 
 #Region "Subscriptions : Update  ### NEEDS COMMENTS ###"
     Public Function update_CustomerSubscription(customerId As String, plan As String, Optional coupon As String = "",
-                                        Optional prorate As String = "", Optional trial_end As String = "",
+                                        Optional prorate As String = "", Optional trial_end As String = "", Optional ccToken As String = "",
                                         Optional ccNumber As String = "", Optional ccExp_Month As String = "",
                                         Optional ccExp_Year As String = "", Optional ccCVC As String = "",
                                         Optional ccName As String = "", Optional ccAddress_Line1 As String = "",
@@ -206,8 +206,8 @@ Public Class vbstripe
         If prorate.Length > 0 Then data &= "&prorate=" & prorate
         If trial_end.Length > 0 Then data &= "&trial_end=" & trial_end
 
-        If ccNumber.Length = 16 Then
-            data &= "card[number]=" & ccNumber
+        If ccNumber.Length = 16 And ccToken.Length < 1 Then
+            data &= "&card[number]=" & ccNumber
             data &= "&card[exp_month]=" & ccExp_Month
             data &= "&card[exp_year]=" & ccExp_Year
             If Len(ccCVC) > 0 Then data &= "&card[cvc]=" & ccCVC
@@ -217,6 +217,8 @@ Public Class vbstripe
             If Len(ccAddress_Zip) > 0 Then data &= "&card[address_zip]=" & ccAddress_Zip
             If Len(ccAddress_State) > 0 Then data &= "&card[address_state]=" & ccAddress_State
             If Len(ccAddress_Country) > 0 Then data &= "&card[address_country]=" & ccAddress_Country
+        ElseIf ccToken.Length > 5 Then
+            data &= "&card=" & ccToken
         End If
         If Len(coupon) > 0 Then
             If Len(data) > 0 Then
@@ -286,6 +288,42 @@ Public Class vbstripe
         If Len(ccAddress_Zip) > 0 Then data &= "&card[address_zip]=" & ccAddress_Zip
         If Len(ccAddress_State) > 0 Then data &= "&card[address_state]=" & ccAddress_State
         If Len(ccAddress_Country) > 0 Then data &= "&card[address_country]=" & ccAddress_Country
+        If Len(description) > 0 Then data &= "&description=" & description
+        Dim returnedData As String = sendReq(data, apiURI)
+        Dim charge As sCharge = JsonConvert.DeserializeObject(Of sCharge)(returnedData)
+        Return charge
+    End Function
+
+    Public Function create_ChargeToken(amount As Integer, currency As String, token As String, Optional ccName As String = "", Optional ccAddress_Line1 As String = "",
+                                   Optional ccAddress_Line2 As String = "", Optional ccAddress_Zip As String = "",
+                                   Optional ccAddress_State As String = "",
+                                   Optional ccAddress_Country As String = "", Optional description As String = "") As sCharge
+
+        If acctToken.Length < 10 Then
+            Throw New ApplicationException("API not provided.")
+        End If
+        If amount < 0 Then
+            Throw New ApplicationException("Amount cannot be less than 0")
+        End If
+        If currency.Length < 1 Then
+            currency = "usd"
+        End If
+        If token.Length < 14 Then
+            Throw New ApplicationException("Token Invalid")
+        End If
+
+        Dim apiURI As String = "/charges"
+        Dim data As String = String.Empty
+
+        data = "amount=" & amount
+        data &= "&currency=" & currency
+        data &= "&card=" & token
+        'If Len(ccName) > 0 Then data &= "&card[name]=" & ccName
+        'If Len(ccAddress_Line1) > 0 Then data &= "&card[address_line1]=" & ccAddress_Line1
+        'If Len(ccAddress_Line2) > 0 Then data &= "&card[address_line2]=" & ccAddress_Line2
+        'If Len(ccAddress_Zip) > 0 Then data &= "&card[address_zip]=" & ccAddress_Zip
+        'If Len(ccAddress_State) > 0 Then data &= "&card[address_state]=" & ccAddress_State
+        'If Len(ccAddress_Country) > 0 Then data &= "&card[address_country]=" & ccAddress_Country
         If Len(description) > 0 Then data &= "&description=" & description
         Dim returnedData As String = sendReq(data, apiURI)
         Dim charge As sCharge = JsonConvert.DeserializeObject(Of sCharge)(returnedData)
