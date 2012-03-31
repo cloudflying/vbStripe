@@ -294,10 +294,7 @@ Public Class vbstripe
         Return charge
     End Function
 
-    Public Function create_ChargeToken(amount As Integer, currency As String, token As String, Optional ccName As String = "", Optional ccAddress_Line1 As String = "",
-                                   Optional ccAddress_Line2 As String = "", Optional ccAddress_Zip As String = "",
-                                   Optional ccAddress_State As String = "",
-                                   Optional ccAddress_Country As String = "", Optional description As String = "") As sCharge
+    Public Function create_ChargeToken(amount As Integer, currency As String, token As String, Optional ccName As String = "", Optional description As String = "") As sCharge
 
         If acctToken.Length < 10 Then
             Throw New ApplicationException("API not provided.")
@@ -318,12 +315,6 @@ Public Class vbstripe
         data = "amount=" & amount
         data &= "&currency=" & currency
         data &= "&card=" & token
-        'If Len(ccName) > 0 Then data &= "&card[name]=" & ccName
-        'If Len(ccAddress_Line1) > 0 Then data &= "&card[address_line1]=" & ccAddress_Line1
-        'If Len(ccAddress_Line2) > 0 Then data &= "&card[address_line2]=" & ccAddress_Line2
-        'If Len(ccAddress_Zip) > 0 Then data &= "&card[address_zip]=" & ccAddress_Zip
-        'If Len(ccAddress_State) > 0 Then data &= "&card[address_state]=" & ccAddress_State
-        'If Len(ccAddress_Country) > 0 Then data &= "&card[address_country]=" & ccAddress_Country
         If Len(description) > 0 Then data &= "&description=" & description
         Dim returnedData As String = sendReq(data, apiURI)
         Dim charge As sCharge = JsonConvert.DeserializeObject(Of sCharge)(returnedData)
@@ -364,7 +355,35 @@ Public Class vbstripe
     ' #### Tokens - COMING SOON ####
 
 #Region "Tokens : Create - N/A"
+    Public Function create_cardToken(ccNumber As String, ccExp_Month As String, ccExp_Year As String,
+                              Optional ccCVC As String = "", Optional ccName As String = "", Optional ccAddress_Line1 As String = "",
+                              Optional ccAddress_Line2 As String = "", Optional ccAddress_Zip As String = "",
+                              Optional ccAddress_State As String = "",
+                              Optional ccAddress_Country As String = "") As sToken
+        If acctToken.Length < 10 Then
+            Throw New ApplicationException("API not provided.")
+        End If
 
+        If ccNumber.Length <> 16 Then
+            Throw New ApplicationException("Credit Card Number must be 16 digits")
+        End If
+
+        Dim apiURI As String = "/tokens"
+        Dim data As String = String.Empty
+        data &= "card[number]=" & ccNumber
+        data &= "&card[exp_month]=" & ccExp_Month
+        data &= "&card[exp_year]=" & ccExp_Year
+        If Len(ccCVC) > 0 Then data &= "&card[cvc]=" & ccCVC
+        If Len(ccName) > 0 Then data &= "&card[name]=" & ccName
+        If Len(ccAddress_Line1) > 0 Then data &= "&card[address_line1]=" & ccAddress_Line1
+        If Len(ccAddress_Line2) > 0 Then data &= "&card[address_line2]=" & ccAddress_Line2
+        If Len(ccAddress_Zip) > 0 Then data &= "&card[address_zip]=" & ccAddress_Zip
+        If Len(ccAddress_State) > 0 Then data &= "&card[address_state]=" & ccAddress_State
+        If Len(ccAddress_Country) > 0 Then data &= "&card[address_country]=" & ccAddress_Country
+        Dim returnedData As String = sendReq(data, apiURI)
+        Dim token As sToken = JsonConvert.DeserializeObject(Of sToken)(returnedData)
+        Return token
+    End Function
 #End Region
 
 #Region "Tokens : Retrieve - N/A"
