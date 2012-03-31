@@ -16,7 +16,7 @@ Public Class vbstripe
     Public acctToken As String = String.Empty
     Public RestProctocal As String = "https://"
     Public RestAPI As String = "api.stripe.com/v1"
-    Public stripeError As sError
+    Public stripeError As ErrorData
 
     ' #### CUSTOMERS ####
 
@@ -38,7 +38,7 @@ Public Class vbstripe
     ''' <param name="coupon">If you provide a coupon code, the customer will have a discount applied on all recurring charges. Charges you create through the API will not have the discount.</param>
     ''' <param name="email">The customer's email address. It is displayed alongside the customer in the web interface and can be useful for searching and tracking. </param>
     ''' <param name="plan">The identifier of the plan to subscribe the customer to. If provided, the returned customer object has a 'subscription' attribute describing the state of the customer's subscription. </param>
-    ''' <param name="trial_end">UTC integer timestamp representing the end of the trial period the customer will get before being charged for the first time. If set, trial_end will override the default trial period of the plan the customer is being subscribed to. </param>
+    ''' <param name="trial_end">UTC integer timestamp representing the end of the trial period the customer will get before being charged for the first time. If set, trial_end will override the default trial period of the plan the customer is being subscribed to. Or days you would like the trial to occur over.</param>
     ''' <returns>Returns a sCustomer (Stripe Customer) result.</returns>
     ''' <remarks>https://stripe.com/docs/api#create_customer</remarks>
     Public Function create_Customer(Optional ccNumber As String = "", Optional ccExp_Month As String = "", Optional ccExp_Year As String = "",
@@ -73,7 +73,14 @@ Public Class vbstripe
         If Len(coupon) > 0 Then data &= "&coupon=" & coupon
         If Len(email) > 0 Then data &= "&email=" & email
         If Len(plan) > 0 Then data &= "&plan=" & plan
-        If Len(trial_end) > 0 Then data &= "&trial_end=" & trial_end
+        If Len(trial_end) > 0 Then
+            If trial_end < 365 Then ' must be day value
+                Dim trial_value As Long = GetEpoch(DateTime.UtcNow.AddDays(trial_end))
+                data &= "&trial_end=" & trial_value
+            Else
+                data &= "&trial_end=" & trial_end
+            End If
+        End If
 
         Dim returnedData As String = sendReq(data, apiURI)
         Dim cust As sCustomer = JsonConvert.DeserializeObject(Of sCustomer)(returnedData)
@@ -108,7 +115,7 @@ Public Class vbstripe
 #End Region
 
 #Region "Customers : Update  ### NEEDS COMMENTS ###"
-    Public Function update_Customer(customerId As String, Optional ccNumber As String = "", Optional ccExp_Month As String = "", Optional ccExp_Year As String = "",
+    Public Function update_Customer(customerId As String, Optional ccToken As String = "", Optional ccNumber As String = "", Optional ccExp_Month As String = "", Optional ccExp_Year As String = "",
                                    Optional ccCVC As String = "", Optional ccName As String = "",
                                    Optional ccAddress_Line1 As String = "", Optional ccAddress_Line2 As String = "",
                                    Optional ccAddress_Zip As String = "", Optional ccAddress_State As String = "",
@@ -126,8 +133,8 @@ Public Class vbstripe
         Dim apiURI As String = "/customers/" & customerId
         Dim data As String = String.Empty
 
-        If ccNumber.Length = 16 Then
-            data &= "card[number]=" & ccNumber
+        If ccNumber.Length = 16 And ccToken.Length <= 5 Then
+            data &= "&card[number]=" & ccNumber
             data &= "&card[exp_month]=" & ccExp_Month
             data &= "&card[exp_year]=" & ccExp_Year
             If Len(ccCVC) > 0 Then data &= "&card[cvc]=" & ccCVC
@@ -137,6 +144,8 @@ Public Class vbstripe
             If Len(ccAddress_Zip) > 0 Then data &= "&card[address_zip]=" & ccAddress_Zip
             If Len(ccAddress_State) > 0 Then data &= "&card[address_state]=" & ccAddress_State
             If Len(ccAddress_Country) > 0 Then data &= "&card[address_country]=" & ccAddress_Country
+        ElseIf ccToken.Length > 5 Then
+            data &= "&card=" & ccToken
         End If
 
         If Len(description) > 0 Then
@@ -161,10 +170,7 @@ Public Class vbstripe
                 data &= "email=" & email
             End If
         End If
-
-        MsgBox(data)
         Dim returnedData As String = sendReq(data, apiURI)
-
         Dim cust As sCustomer = JsonConvert.DeserializeObject(Of sCustomer)(returnedData)
         Return cust
     End Function
@@ -361,10 +367,12 @@ Public Class vbstripe
                               Optional ccAddress_State As String = "",
                               Optional ccAddress_Country As String = "") As sToken
         If acctToken.Length < 10 Then
+           
             Throw New ApplicationException("API not provided.")
         End If
 
         If ccNumber.Length <> 16 Then
+            
             Throw New ApplicationException("Credit Card Number must be 16 digits")
         End If
 
@@ -441,7 +449,7 @@ Public Class vbstripe
                 Dim read As New StreamReader(ex.Response.GetResponseStream())
                 Dim tmp As String = read.ReadToEnd()
                 read.Close()
-                stripeError = JsonConvert.DeserializeObject(Of sError)(tmp)
+                stripeError = JsonConvert.DeserializeObject(Of ErrorData)(tmp)
                 ' Throw New ApplicationException("ISSUES")
                 Throw New ApplicationException(CType(ex.Response, HttpWebResponse).StatusCode & " : " & tmp)
             Else

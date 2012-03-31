@@ -45,14 +45,5 @@ Public Class sError
 
 
 
-    'Private _StripeError As ErrorData
-    '<JsonProperty("error")> _
-    'Public Property StripeError As ErrorData
-    '    Get
-    '        Return _StripeError
-    '    End Get
-    '    Set(value As ErrorData)
-    '        _StripeError = value
-    '    End Set
-    'End Property
+    
 End Class
