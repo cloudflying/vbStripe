@@ -8,6 +8,5 @@ C:\git\vbStripe\vbStripe\obj\Debug\ResGen.write.1.tlog
 C:\git\vbStripe\vbStripe\obj\Debug\vbStripe.dll
 C:\git\vbStripe\vbStripe\obj\Debug\vbStripe.xml
 C:\git\vbStripe\vbStripe\obj\Debug\vbStripe.pdb
-C:\git\vbStripe\vbStripe\bin\Debug\Newtonsoft.Json.dll
 C:\git\vbStripe\vbStripe\bin\Debug\Newtonsoft.Json.pdb
 C:\git\vbStripe\vbStripe\bin\Debug\Newtonsoft.Json.xml

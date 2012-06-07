@@ -403,6 +403,44 @@ Public Class vbstripe
 
     ' #### Invoices - COMING SOON ####
 
+#Region "Invoices : Add Item   #### NEEDS COMMENTS ###"
+    'curl https://api.stripe.com/v1/invoiceitems \ 
+    '-u ATOktjVwTp1RYLIDIXs4SyT729IKxhAC: \ 
+    '-d customer=cus_pSzKD3AQpaX51v \ 
+    '-d amount=1000 \ 
+    '-d currency=usd \ 
+    '-d "description=One-time setup fee"
+
+    Public Function addInvoiceItem(customerId As String, amount As String, Optional description As String = "",
+                                   Optional invoice As String = "", Optional currency As String = "usd") As String 'sInvoiceItem
+
+        If acctToken.Length < 10 Then
+            Throw New ApplicationException("API not provided.")
+        End If
+        If customerId.Length < 3 Then
+            Throw New ApplicationException("Customer ID not provided.")
+        End If
+        If amount.Length < 1 Then
+            Throw New ApplicationException("Amount must be at least 0.")
+        End If
+
+        Dim apiURI As String = "/invoiceitems"
+        Dim data As New StringBuilder
+        data.Append("customer=" & customerId)
+        data.Append("&amount=" & amount)
+        data.Append("&currency=" & currency)
+
+        If Len(description) > 0 Then data.Append("&description=" & description)
+        If Len(invoice) > 0 Then data.Append("&invoice=" & invoice)
+
+
+        Dim returnedData As String = sendReq(data.ToString, apiURI)
+        Return returnedData
+        'Dim inv As sInvoiceItem = JsonConvert.DeserializeObject(Of sInvoiceItem)(returnedData)
+        'Return inv
+    End Function
+
+#End Region
 
     ' #### Coupons - COMING SOON #####
 

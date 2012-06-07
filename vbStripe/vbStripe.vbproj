@@ -73,6 +73,7 @@
     <Compile Include="stripe_serialized\sCharge.vb" />
     <Compile Include="stripe_serialized\sCustomer.vb" />
     <Compile Include="stripe_serialized\sError.vb" />
+    <Compile Include="stripe_serialized\sInvoiceItem.vb" />
     <Compile Include="stripe_serialized\sPlan.vb" />
     <Compile Include="stripe_serialized\sSubscription.vb" />
     <Compile Include="stripe_serialized\sToken.vb" />
