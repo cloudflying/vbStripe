@@ -326,6 +326,33 @@ Public Class vbstripe
         Dim charge As sCharge = JsonConvert.DeserializeObject(Of sCharge)(returnedData)
         Return charge
     End Function
+
+    Public Function create_ChargeCustomer(amount As Integer, currency As String, customer As String, Optional description As String = "") As sCharge
+
+        If acctToken.Length < 10 Then
+            Throw New ApplicationException("API not provided.")
+        End If
+        If amount < 0 Then
+            Throw New ApplicationException("Amount cannot be less than 0")
+        End If
+        If currency.Length < 1 Then
+            currency = "usd"
+        End If
+        If customer.Length < 10 Then
+            Throw New ApplicationException("Customer Invalid")
+        End If
+
+        Dim apiURI As String = "/charges"
+        Dim data As String = String.Empty
+
+        data = "amount=" & amount
+        data &= "&currency=" & currency
+        data &= "&customer=" & customer
+        If Len(description) > 0 Then data &= "&description=" & description
+        Dim returnedData As String = sendReq(data, apiURI)
+        Dim charge As sCharge = JsonConvert.DeserializeObject(Of sCharge)(returnedData)
+        Return charge
+    End Function
 #End Region
 
 #Region "Charges : Retrieve - N/A"
@@ -412,7 +439,7 @@ Public Class vbstripe
     '-d "description=One-time setup fee"
 
     Public Function addInvoiceItem(customerId As String, amount As String, Optional description As String = "",
-                                   Optional invoice As String = "", Optional currency As String = "usd") As String 'sInvoiceItem
+                                   Optional invoice As String = "", Optional currency As String = "usd") As sInvoiceItem
 
         If acctToken.Length < 10 Then
             Throw New ApplicationException("API not provided.")
@@ -435,17 +462,65 @@ Public Class vbstripe
 
 
         Dim returnedData As String = sendReq(data.ToString, apiURI)
+        Dim inv As sInvoiceItem = JsonConvert.DeserializeObject(Of sInvoiceItem)(returnedData)
+        Return inv
+    End Function
+
+#End Region
+
+#Region "INVOICES : Get Current  ### NEEDS COMMENTS ###"
+    Public Function retrieveCurrentInv(customerId As String) As String
+
+        If acctToken.Length < 10 Then
+            Throw New ApplicationException("API not provided.")
+        End If
+        If customerId.Length < 3 Then
+            Throw New ApplicationException("Customer ID not provided.")
+        End If
+       
+        Dim apiURI As String = "/invoices/upcoming?customer=" & customerId
+
+        Dim returnedData As String = sendReq(String.Empty, apiURI)
         Return returnedData
         'Dim inv As sInvoiceItem = JsonConvert.DeserializeObject(Of sInvoiceItem)(returnedData)
         'Return inv
     End Function
-
 #End Region
 
     ' #### Coupons - COMING SOON #####
 
 
     ' #### Events - COMING SOON #####
+
+
+    ' #### Ingest Functions - Implements WebHooks
+
+
+    Public Function webhookProcess(webhookJson As String) As webhookReturn
+
+        ' // find event type to process and handle correctly
+        Dim strPos As Integer = 0
+        Dim endQuotePos As Integer = 0
+        strPos = InStr(webhookJson, "type"":", CompareMethod.Text)
+        If strPos = 0 Then strPos = InStr(webhookJson, "type"" :")
+        If strPos = 0 Then
+            Throw New ApplicationException("Error Occurred, Unable to determine webhook type.")
+        Else
+            Dim webHookType As String
+            webHookType = Trim(Mid(webhookJson, strPos + Len("type"":"), InStr(strPos, webhookJson, ",") - (strPos + Len("type"":"))).Replace("""", ""))
+
+            Select Case LCase(webHookType)
+                Case "invoice.created"
+                    ' // Invoice Created
+                Case Else
+                    Throw New ApplicationException("Error Occurred, we currently don't support this webhook event type.")
+            End Select
+
+
+
+
+        End If
+    End Function
 
     ' ### FUNCTIONS ###
 
