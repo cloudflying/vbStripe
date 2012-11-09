@@ -102,7 +102,7 @@ Public Class vbstripe
         Dim data As String = String.Empty
 
         If ccToken.Length > 4 Then
-            data &= "card[token]=" & ccToken
+            data &= "card=" & ccToken
             'If Len(ccName) > 0 Then data &= "&card[name]=" & ccName
             'If Len(ccAddress_Line1) > 0 Then data &= "&card[address_line1]=" & ccAddress_Line1
             'If Len(ccAddress_Line2) > 0 Then data &= "&card[address_line2]=" & ccAddress_Line2
