@@ -57,7 +57,7 @@ Public Class vbstripe
         Dim data As String = String.Empty
 
         If ccNumber.Length = 16 Then
-            data &= "&card[number]=" & ccNumber
+            data &= "card[number]=" & ccNumber
             data &= "&card[exp_month]=" & ccExp_Month
             data &= "&card[exp_year]=" & ccExp_Year
             If Len(ccCVC) > 0 Then data &= "&card[cvc]=" & ccCVC
@@ -67,6 +67,48 @@ Public Class vbstripe
             If Len(ccAddress_Zip) > 0 Then data &= "&card[address_zip]=" & ccAddress_Zip
             If Len(ccAddress_State) > 0 Then data &= "&card[address_state]=" & ccAddress_State
             If Len(ccAddress_Country) > 0 Then data &= "&card[address_country]=" & ccAddress_Country
+        End If
+
+        If Len(description) > 0 Then data &= "&description=" & description
+        If Len(coupon) > 0 Then data &= "&coupon=" & coupon
+        If Len(email) > 0 Then data &= "&email=" & email
+        If Len(plan) > 0 Then data &= "&plan=" & plan
+        If Len(trial_end) > 0 Then
+            If trial_end < 365 Then ' must be day value
+                Dim trial_value As Long = GetEpoch(DateTime.UtcNow.AddDays(trial_end))
+                data &= "&trial_end=" & trial_value
+            Else
+                data &= "&trial_end=" & trial_end
+            End If
+        End If
+
+        Dim returnedData As String = sendReq(data, apiURI)
+        Dim cust As sCustomer = JsonConvert.DeserializeObject(Of sCustomer)(returnedData)
+        Return cust
+    End Function
+
+    Public Function create_CustomerToken(Optional ccToken As String = "", Optional ccName As String = "",
+                                   Optional ccAddress_Line1 As String = "", Optional ccAddress_Line2 As String = "",
+                                   Optional ccAddress_Zip As String = "", Optional ccAddress_State As String = "",
+                                   Optional ccAddress_Country As String = "", Optional description As String = "",
+                                   Optional coupon As String = "", Optional email As String = "",
+                                   Optional plan As String = "", Optional trial_end As String = "") As sCustomer
+
+        If acctToken.Length < 10 Then
+            Throw New ApplicationException("API not provided.")
+        End If
+
+        Dim apiURI As String = "/customers"
+        Dim data As String = String.Empty
+
+        If ccToken.Length > 4 Then
+            data &= "card[token]=" & ccToken
+            'If Len(ccName) > 0 Then data &= "&card[name]=" & ccName
+            'If Len(ccAddress_Line1) > 0 Then data &= "&card[address_line1]=" & ccAddress_Line1
+            'If Len(ccAddress_Line2) > 0 Then data &= "&card[address_line2]=" & ccAddress_Line2
+            'If Len(ccAddress_Zip) > 0 Then data &= "&card[address_zip]=" & ccAddress_Zip
+            'If Len(ccAddress_State) > 0 Then data &= "&card[address_state]=" & ccAddress_State
+            'If Len(ccAddress_Country) > 0 Then data &= "&card[address_country]=" & ccAddress_Country
         End If
 
         If Len(description) > 0 Then data &= "&description=" & description

@@ -6,20 +6,7 @@ vbStripe
 </name>
 </assembly>
 <members>
-<member name="P:vbStripe.My.Resources.Resources.ResourceManager">
-	<summary>
-  Returns the cached ResourceManager instance used by this class.
-</summary>
-</member><member name="P:vbStripe.My.Resources.Resources.Culture">
-	<summary>
-  Overrides the current thread's CurrentUICulture property for all
-  resource lookups using this strongly typed resource class.
-</summary>
-</member><member name="T:vbStripe.My.Resources.Resources">
-	<summary>
-  A strongly-typed resource class, for looking up localized strings, etc.
-</summary>
-</member><member name="M:vbStripe.vbstripe.create_Customer(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+<member name="M:vbStripe.vbstripe.create_Customer(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
 	<summary>
  Create A new customer. No information is required, I would suggest using email address just to have some kind of information attached to the customer. If you provide a Credit Card Number you need to provide the expiration information.
  </summary>
@@ -71,6 +58,19 @@ vbStripe
 	<param name="apiURI">URI after (Must include starting /)</param>
 	<returns>JSON FROM stripe</returns>
 	<remarks></remarks>
+</member><member name="P:vbStripe.My.Resources.Resources.ResourceManager">
+	<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member><member name="P:vbStripe.My.Resources.Resources.Culture">
+	<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member><member name="T:vbStripe.My.Resources.Resources">
+	<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
 </member>
 </members>
 </doc>

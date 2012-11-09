@@ -10,3 +10,14 @@ C:\git\vbStripe\vbStripe\obj\Debug\vbStripe.xml
 C:\git\vbStripe\vbStripe\obj\Debug\vbStripe.pdb
 C:\git\vbStripe\vbStripe\bin\Debug\Newtonsoft.Json.pdb
 C:\git\vbStripe\vbStripe\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Justin\Documents\GitHub\vbStripe\vbStripe\bin\Debug\vbStripe.dll
+C:\Users\Justin\Documents\GitHub\vbStripe\vbStripe\bin\Debug\vbStripe.pdb
+C:\Users\Justin\Documents\GitHub\vbStripe\vbStripe\bin\Debug\vbStripe.xml
+C:\Users\Justin\Documents\GitHub\vbStripe\vbStripe\bin\Debug\Newtonsoft.Json.pdb
+C:\Users\Justin\Documents\GitHub\vbStripe\vbStripe\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Justin\Documents\GitHub\vbStripe\vbStripe\obj\Debug\vbStripe.vbprojResolveAssemblyReference.cache
+C:\Users\Justin\Documents\GitHub\vbStripe\vbStripe\obj\Debug\vbStripe.Resources.resources
+C:\Users\Justin\Documents\GitHub\vbStripe\vbStripe\obj\Debug\vbStripe.vbproj.GenerateResource.Cache
+C:\Users\Justin\Documents\GitHub\vbStripe\vbStripe\obj\Debug\vbStripe.dll
+C:\Users\Justin\Documents\GitHub\vbStripe\vbStripe\obj\Debug\vbStripe.xml
+C:\Users\Justin\Documents\GitHub\vbStripe\vbStripe\obj\Debug\vbStripe.pdb
