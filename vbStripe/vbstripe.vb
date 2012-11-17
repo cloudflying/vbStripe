@@ -220,7 +220,27 @@ Public Class vbstripe
 #End Region
 
 #Region "Customers : Retrieve - N/A"
+    Public Function retrieve_Customer(CustomerID As String) As sCustomer
 
+        If acctToken.Length < 10 Then
+            Throw New ApplicationException("API not provided.")
+        End If
+
+        Dim apiURI As String = "/customers"
+
+        If Len(CustomerID) > 5 Then
+            apiURI &= "/" & CustomerID
+        Else
+            Throw New ApplicationException("Customer ID must be provided.")
+        End If
+
+        Dim data As String = String.Empty
+
+
+        Dim returnedData As String = sendReq(data, apiURI)
+        Dim cust As sCustomer = JsonConvert.DeserializeObject(Of sCustomer)(returnedData)
+        Return cust
+    End Function
 #End Region
 
 #Region "Customers : List All - N/A"
